@@ -86,7 +86,7 @@
 	  };
 
 	  this.$get = function ($injector) {
-	    return _extends({}, _store, { connect: (0, _connector2.default)(store) });
+	    return _extends({}, _store, { connect: (0, _connector2.default)(_store) });
 	  };
 
 	  this.$get.$inject = ['$injector'];

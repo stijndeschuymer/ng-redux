@@ -7,7 +7,7 @@ export default function ngReduxProvider() {
     _store = store;
   };
   
-  this.$get = ($injector) => ({ ..._store, connect: Connector(store) });
+  this.$get = ($injector) => ({ ..._store, connect: Connector(_store) });
 
   this.$get.$inject = ['$injector'];
 } 
