@@ -46,7 +46,9 @@
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _ngRedux = __webpack_require__(1);
 
@@ -62,9 +64,11 @@
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.default = ngReduxProvider;
 
@@ -72,103 +76,17 @@
 
 	var _connector2 = _interopRequireDefault(_connector);
 
-	var _invariant = __webpack_require__(19);
-
-	var _invariant2 = _interopRequireDefault(_invariant);
-
-	var _redux = __webpack_require__(5);
-
-	var _digestMiddleware = __webpack_require__(36);
-
-	var _digestMiddleware2 = _interopRequireDefault(_digestMiddleware);
-
-	var _lodash = __webpack_require__(27);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _lodash3 = __webpack_require__(24);
-
-	var _lodash4 = _interopRequireDefault(_lodash3);
-
-	var _lodash5 = __webpack_require__(25);
-
-	var _lodash6 = _interopRequireDefault(_lodash5);
-
-	var _lodash7 = __webpack_require__(26);
-
-	var _lodash8 = _interopRequireDefault(_lodash7);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function ngReduxProvider() {
-	  var _reducer = undefined;
-	  var _middlewares = undefined;
-	  var _storeEnhancers = undefined;
-	  var _initialState = undefined;
-	  var _reducerIsObject = undefined;
+	  var _store = undefined;
 
-	  this.createStoreWith = function (reducer, middlewares, storeEnhancers, initialState) {
-	    (0, _invariant2.default)((0, _lodash6.default)(reducer) || (0, _lodash8.default)(reducer), 'The reducer parameter passed to createStoreWith must be a Function or an Object. Instead received %s.', typeof reducer === 'undefined' ? 'undefined' : _typeof(reducer));
-
-	    (0, _invariant2.default)(!storeEnhancers || (0, _lodash4.default)(storeEnhancers), 'The storeEnhancers parameter passed to createStoreWith must be an Array. Instead received %s.', typeof storeEnhancers === 'undefined' ? 'undefined' : _typeof(storeEnhancers));
-
-	    _reducer = reducer;
-	    _reducerIsObject = (0, _lodash8.default)(reducer);
-	    _storeEnhancers = storeEnhancers;
-	    _middlewares = middlewares || [];
-	    _initialState = initialState;
+	  this.setStore = function (store) {
+	    _store = store;
 	  };
 
 	  this.$get = function ($injector) {
-	    var store = void 0,
-	        resolvedMiddleware = [];
-
-	    for (var _iterator = _middlewares, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-	      var _ref;
-
-	      if (_isArray) {
-	        if (_i >= _iterator.length) break;
-	        _ref = _iterator[_i++];
-	      } else {
-	        _i = _iterator.next();
-	        if (_i.done) break;
-	        _ref = _i.value;
-	      }
-
-	      var middleware = _ref;
-
-	      if (typeof middleware === 'string') {
-	        resolvedMiddleware.push($injector.get(middleware));
-	      } else {
-	        resolvedMiddleware.push(middleware);
-	      }
-	    }
-
-	    if (_reducerIsObject) {
-	      (function () {
-	        var reducersObj = {};
-	        var reducKeys = Object.keys(_reducer);
-
-	        reducKeys.forEach(function (key) {
-	          if (typeof _reducer[key] === 'string') {
-	            reducersObj[key] = $injector.get(_reducer[key]);
-	          } else {
-	            reducersObj[key] = _reducer[key];
-	          }
-	        });
-
-	        _reducer = (0, _redux.combineReducers)(reducersObj);
-	      })();
-	    }
-
-	    var finalCreateStore = _storeEnhancers ? _redux.compose.apply(undefined, _storeEnhancers)(_redux.createStore) : _redux.createStore;
-
-	    //digestMiddleware needs to be the last one.
-	    resolvedMiddleware.push((0, _digestMiddleware2.default)($injector.get('$rootScope')));
-
-	    store = _initialState ? _redux.applyMiddleware.apply(undefined, resolvedMiddleware)(finalCreateStore)(_reducer, _initialState) : _redux.applyMiddleware.apply(undefined, resolvedMiddleware)(finalCreateStore)(_reducer);
-
-	    return (0, _lodash2.default)({}, store, { connect: (0, _connector2.default)(store) });
+	    return _extends({}, _store, { connect: (0, _connector2.default)(store) });
 	  };
 
 	  this.$get.$inject = ['$injector'];
@@ -180,7 +98,9 @@
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.default = Connector;
 
 	var _shallowEqual = __webpack_require__(3);
@@ -276,7 +196,9 @@
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.default = shallowEqual;
 	function shallowEqual(objA, objB) {
 	  if (objA === objB) {
@@ -312,7 +234,9 @@
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.default = wrapActionCreators;
 
 	var _redux = __webpack_require__(5);
@@ -388,6 +312,9 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -922,11 +849,7 @@
 			if (Symbol.observable) {
 				result = Symbol.observable;
 			} else {
-				if (typeof Symbol['for'] === 'function') {
-					result = Symbol['for']('observable');
-				} else {
-					result = Symbol('observable');
-				}
+				result = Symbol('observable');
 				Symbol.observable = result;
 			}
 		} else {
@@ -3063,24 +2986,6 @@
 
 	module.exports = restParam;
 
-
-/***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	exports.__esModule = true;
-	exports.default = digestMiddleware;
-	function digestMiddleware($rootScope) {
-	  return function (store) {
-	    return function (next) {
-	      return function (action) {
-	        $rootScope.$evalAsync(next(action));
-	      };
-	    };
-	  };
-	}
 
 /***/ }
 /******/ ]);
